@@ -32,9 +32,9 @@ namespace Quiz.Api.Controllers
 
         [HttpGet]
         [Route("checkanswer")]
-        public async Task<IActionResult> SprawdzOdpowiedz(Guid answerId)
+        public async Task<IActionResult> SprawdzOdpowiedz(Guid answerId, int category)
         {
-            var result = await _service.ChackAnswer(answerId);
+            var result = await _service.ChackAnswer(answerId, category);
             return Ok(result);
         }
 

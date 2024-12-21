@@ -7,7 +7,7 @@ namespace Quiz.Api.Services
     {
         SqlConnection _connection;
         Random _random;
-        private const string connStr = "Server=.\\HERMANLOCAL;Database=CqrsTp2;Integrated Security=true;TrustServerCertificate=true";
+        private const string connStr = "Server=tcp:projektysan.database.windows.net,1433;Initial Catalog=sanquiz;Persist Security Info=False;User ID=aherman;Password=yxFH#D8w1SabJ1TAH99f;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
         public QuizService()
         {
@@ -55,8 +55,10 @@ namespace Quiz.Api.Services
             return selectedQuestion;
         }
 
-        public async Task<bool> ChackAnswer(Guid answerId)
+        public async Task<CheckAnswer> ChackAnswer(Guid answerId, int category)
         {
+            List<int> categories = [100, 200, 300, 400, 500, 750, 1000];
+
             var correct = false;
             await _connection.OpenAsync();
             var query = $"select AnswerIsCorrect from Answers where AnswerId = '{answerId}'";
@@ -66,9 +68,12 @@ namespace Quiz.Api.Services
             {
                 correct = reader.GetBoolean(0);
             }
+
+            var currentIndex = categories.IndexOf(category);
+            var nextCategory = currentIndex == 6 ? 0 : categories[currentIndex + 1];
             
             await _connection.CloseAsync();
-            return correct;
+            return new CheckAnswer { IsCorrect = correct, NextCategory = nextCategory };
         } 
     }
 }

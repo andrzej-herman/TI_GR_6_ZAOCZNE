@@ -1,4 +1,5 @@
-﻿using Quiz.Data;
+﻿using Microsoft.IdentityModel.Logging;
+using Quiz.Data;
 
 namespace Quiz.Api.Services
 {
@@ -6,6 +7,6 @@ namespace Quiz.Api.Services
     {
         Task<QuestionDto?> GetQuestion(int category);
 
-        Task<bool> ChackAnswer(Guid answerId);
+        Task<CheckAnswer> ChackAnswer(Guid answerId, int category);
     }
 }
